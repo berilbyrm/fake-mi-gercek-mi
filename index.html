@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Fake mi Gerçek mi?</title>
+
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  margin-top: 100px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>Fake mi Gerçek mi?</h1>
+<p id="question"></p>
+
+<button onclick="checkAnswer('gerçek')">Gerçek</button>
+<button onclick="checkAnswer('sahte')">Sahte</button>
+
+<p id="result"></p>
+
+<script>
+
+const questions = [
+  {
+    text: "NASA Ay’da su bulduğunu açıkladı.",
+    answer: "gerçek"
+  },
+  {
+    text: "Türkiye’de 5 gün boyunca internet tamamen kapatıldı.",
+    answer: "sahte"
+  },
+  {
+    text: "Bilim insanları plastik yiyen bakteri keşfetti.",
+    answer: "gerçek"
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+function loadQuestion() {
+  document.getElementById("question").innerText =
+    questions[currentQuestion].text;
+}
+
+function checkAnswer(userAnswer) {
+  if (userAnswer === questions[currentQuestion].answer) {
+    score++;
+  }
+
+  currentQuestion++;
+
+  if (currentQuestion < questions.length) {
+    loadQuestion();
+  } else {
+    document.body.innerHTML =
+      "<h1>Test Bitti!</h1>" +
+      "<p>Doğru Sayısı: " + score + "</p>" +
+      "<p>Yanlış Sayısı: " + (questions.length - score) + "</p>";
+  }
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
