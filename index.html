@@ -6,7 +6,77 @@
 <title>Fake mi Gerçek mi?</title>
 
 <style>
-* { box-sizing: border-box; }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  padding: 40px;
+  width: 420px;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+#question {
+  margin-bottom: 25px;
+  font-size: 18px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.true-btn {
+  background: #00c853;
+  color: white;
+}
+
+.false-btn {
+  background: #d50000;
+  color: white;
+}
+
+button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+#result {
+  margin-top: 20px;
+  font-weight: 600;
+}
+</style>
+
 
 body {
   margin: 0;
