@@ -1,230 +1,60 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fake mi Gerçek mi?</title>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
 body {
-  display: flex;
-  flex-direction: column;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
-  flex: 1;
-}
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
-}
-
-body {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-.container {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-  padding: 40px;
-  width: 420px;
-  border-radius: 20px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    text-align: center;
+    margin-top: 120px;
 }
 
 h1 {
-  margin-bottom: 20px;
-  font-weight: 600;
+    color: #1a2a40;
+    font-size: 40px;
 }
 
-#question {
-  margin-bottom: 25px;
-  font-size: 18px;
+p {
+    color: #555;
+    margin-bottom: 30px;
+}
+
+input {
+    width: 400px;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
 }
 
 button {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.true-btn {
-  background: #00c853;
-  color: white;
-}
-
-.false-btn {
-  background: #d50000;
-  color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+    background-color: #1a2a40;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 button:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
+    background-color: #243a5e;
 }
 
 #result {
-  margin-top: 20px;
-  font-weight: 600;
-}
-</style>
-
-
-
-
-
-
-
-</head>
-
-<body>
-
-<div class="container">
-
-  <!-- Açılış -->
-  <div id="startScreen">
-    <h1>Fake mi Gerçek mi?</h1>
-    <p>Bu test, dijital ortamda yayılan haber içeriklerini ayırt etme becerinizi ölçmeyi amaçlamaktadır.</p>
-    <button class="primary" onclick="startTest()">Teste Başla</button>
-  </div>
-
-  <!-- Test -->
-  <div id="quizScreen" class="hidden">
-    <h2 id="question"></h2>
-    <div class="progress-bar">
-      <div class="progress" id="progress"></div>
-    </div>
-    <button class="true" onclick="checkAnswer('gerçek')">Gerçek</button>
-    <button class="false" onclick="checkAnswer('sahte')">Sahte</button>
-    <div class="small-text" id="feedback"></div>
-  </div>
-
-  <!-- Sonuç -->
-  <div id="resultScreen" class="hidden">
-    <h2>Test Tamamlandı</h2>
-    <p id="scoreText"></p>
-    <p class="small-text">
-      Bu test medya okuryazarlığı farkındalığını artırmayı amaçlayan bir simülasyondur.
-    </p>
-    <button class="primary" onclick="restartTest()">Tekrar Dene</button>
-  </div>
-
-</div>
-
-<script>
-
-const questions = [
-  {
-    text: "NASA Ay yüzeyinde su molekülleri bulunduğunu açıkladı.",
-    answer: "gerçek",
-    explanation: "NASA 2020 yılında Ay yüzeyinde su molekülleri bulunduğunu duyurmuştur."
-  },
-  {
-    text: "Türkiye’de 1 hafta boyunca tüm sosyal medya tamamen kapatıldı.",
-    answer: "sahte",
-    explanation: "Bu şekilde ülke genelinde resmi bir karar bulunmamaktadır."
-  },
-  {
-    text: "Bilim insanları plastik yiyen bakteri keşfetti.",
-    answer: "gerçek",
-    explanation: "Bazı bakteri türlerinin plastik parçalayabildiği bilimsel çalışmalarda gösterilmiştir."
-  },
-  {
-    text: "Bir enerji içeceği IQ seviyesini 200’e çıkarıyor.",
-    answer: "sahte",
-    explanation: "IQ artırdığı kanıtlanmış bir içecek bulunmamaktadır."
-  }
-];
-
-let currentQuestion = 0;
-let score = 0;
-
-function startTest() {
-  document.getElementById("startScreen").classList.add("hidden");
-  document.getElementById("quizScreen").classList.remove("hidden");
-  loadQuestion();
+    margin-top: 30px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-function loadQuestion() {
-  document.getElementById("question").innerText = questions[currentQuestion].text;
-  document.getElementById("feedback").innerText = "";
-  updateProgress();
+footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 20px;
+    background-color: #1a2a40;
+    color: white;
 }
-
-function updateProgress() {
-  let percent = (currentQuestion / questions.length) * 100;
-  document.getElementById("progress").style.width = percent + "%";
-}
-
-function checkAnswer(userAnswer) {
-  let correct = questions[currentQuestion].answer;
-
-  if (userAnswer === correct) {
-    score++;
-    document.getElementById("feedback").innerText = "✅ Doğru! " + questions[currentQuestion].explanation;
-  } else {
-    document.getElementById("feedback").innerText = "❌ Yanlış! " + questions[currentQuestion].explanation;
-  }
-
-  setTimeout(() => {
-    currentQuestion++;
-    if (currentQuestion < questions.length) {
-      loadQuestion();
-    } else {
-      showResult();
-    }
-  }, 2000);
-}
-
-function showResult() {
-  document.getElementById("quizScreen").classList.add("hidden");
-  document.getElementById("resultScreen").classList.remove("hidden");
-
-  let percentage = Math.round((score / questions.length) * 100);
-
-  document.getElementById("scoreText").innerHTML =
-    "Başarı Oranı: %" + percentage + "<br><br>" +
-    (percentage < 50 ? "Dijital içeriklere karşı daha eleştirel yaklaşmanız önerilir."
-     : percentage < 75 ? "Orta düzey medya okuryazarlığı."
-     : "Yüksek medya okuryazarlığı seviyesine sahipsiniz.");
-}
-
-function restartTest() {
-  currentQuestion = 0;
-  score = 0;
-  document.getElementById("resultScreen").classList.add("hidden");
-  document.getElementById("startScreen").classList.remove("hidden");
-  document.getElementById("progress").style.width = "0%";
-}
-
-</script>
-  </div>
-
-<footer style="margin-top:20px; font-size:13px; opacity:0.8; text-align:center;">
-© 2026 Fake mi Gerçek mi? | Bu site Uşak Üniversitesi İletişim Fakültesi öğrencileri tarafından yapılmıştır.
-</footer>
-
-</body>
-
-</body>
-</html>
