@@ -103,6 +103,53 @@ function analyzeNews() {
         result.style.color = "orange";
     }
 }
+<script>
+function analyzeNews() {
+    var input = document.getElementById("newsInput").value.trim();
+    var result = document.getElementById("result");
+
+    if (input === "") {
+        result.innerHTML = "Lütfen bir haber linki giriniz.";
+        result.style.color = "red";
+        return;
+    }
+
+    try {
+        var url = new URL(input);
+        var domain = url.hostname;
+
+        let message = "";
+        let color = "";
+
+        if (domain.includes("gov")) {
+            message = "Bu site resmi bir devlet uzantısı (.gov). Genellikle güvenilir kabul edilir.";
+            color = "green";
+        }
+        else if (domain.includes("edu")) {
+            message = "Bu site eğitim kurumu uzantısı (.edu). Akademik içerik barındırma olasılığı yüksektir.";
+            color = "green";
+        }
+        else if (domain.includes("bbc") || domain.includes("trthaber") || domain.includes("ntv") || domain.includes("aa.com")) {
+            message = "Bu kaynak bilinen bir haber kuruluşuna ait. İçerik editöryal süzgeçten geçmiş olabilir.";
+            color = "green";
+        }
+        else if (domain.endsWith(".xyz") || domain.endsWith(".click") || domain.endsWith(".buzz")) {
+            message = "Alan adı uzantısı düşük güvenilirlik grubunda olabilir. Kaynağı dikkatli inceleyin.";
+            color = "orange";
+        }
+        else {
+            message = "Bu kaynağın güvenilirliği net değil. Yazar, tarih ve referansları kontrol etmeniz önerilir.";
+            color = "orange";
+        }
+
+        result.innerHTML = "<strong>Kaynak:</strong> " + domain + "<br><br>" + message;
+        result.style.color = color;
+
+    } catch (error) {
+        result.innerHTML = "Geçerli bir URL giriniz (https:// ile başlamalı).";
+        result.style.color = "red";
+    }
+}
 </script>
 
 </body>
