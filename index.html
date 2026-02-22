@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Fake mi Gerçek mi?</title>
+
+<style>
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -58,3 +65,45 @@ footer {
     background-color: #1a2a40;
     color: white;
 }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Fake mi Gerçek mi?</h1>
+    <p>Bir haber linki girin, güvenilirlik analizini öğrenin.</p>
+
+    <input type="text" id="newsInput" placeholder="Haber linkini buraya yapıştırın">
+    <button onclick="analyzeNews()">Analiz Et</button>
+
+    <div id="result"></div>
+</div>
+
+<footer>
+Bu site Uşak Üniversitesi İletişim Fakültesi öğrencileri tarafından yapılmıştır.
+</footer>
+
+<script>
+function analyzeNews() {
+    var input = document.getElementById("newsInput").value;
+    var result = document.getElementById("result");
+
+    if (input === "") {
+        result.innerHTML = "Lütfen bir haber linki giriniz.";
+        result.style.color = "red";
+        return;
+    }
+
+    if (input.includes("gov") || input.includes("edu") || input.includes("bbc") || input.includes("trthaber")) {
+        result.innerHTML = "Bu haber güvenilir kaynaklardan geliyor gibi görünüyor.";
+        result.style.color = "green";
+    } else {
+        result.innerHTML = "Bu haberin kaynağı güvenilir görünmüyor. Dikkatli olunmalıdır.";
+        result.style.color = "orange";
+    }
+}
+</script>
+
+</body>
+</html>
