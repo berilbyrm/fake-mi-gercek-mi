@@ -57,47 +57,67 @@ button {
 <script>
 function analyzeNews() {
 
-  let url = document.getElementById("newsUrl").value;
-  let score = 50;
+let url = document.getElementById("newsInput").value.toLowerCase();
+let resultBox = document.getElementById("result");
 
-  let guvenilir = ["bbc.com","aa.com.tr","dw.com","trthaber.com"];
-  let supheli = ["haber365","sondakikahaberlerim","xblog","bilinmeyensite"];
+let status = "";
+let color = "";
+let details = [];
 
-  for (let site of guvenilir) {
-    if (url.includes(site)) {
-      score += 40;
-    }
-  }
+/* Güvenilir bilinen siteler */
+let trustedSites = ["bbc.com", "aa.com.tr", "ntv.com.tr", "trt.com.tr", "reuters.com"];
 
-  for (let site of supheli) {
-    if (url.includes(site)) {
-      score -= 40;
-    }
-  }
+/* Şüpheli kelimeler */
+let suspiciousWords = ["sok", "şok", "inanılmaz", "hemen izle", "gizli plan", "bunu kimse bilmiyor"];
 
-  if (url.length > 100) {
-    score -= 10;
-  }
+/* Domain Analizi */
+if (url.includes(".gov") || url.includes(".edu")) {
+    details.push("Resmi veya akademik domain uzantısı içeriyor.");
+}
 
-  if (score > 100) score = 100;
-  if (score < 0) score = 0;
+if (trustedSites.some(site => url.includes(site))) {
+    status = "🟢 Bu kaynak güvenilir kategoride değerlendirilmektedir.";
+    color = "#1f7a3f";
+    details.push("Bilinen kurumsal haber kaynağı listesinde yer alıyor.");
+}
+else if (suspiciousWords.some(word => url.includes(word))) {
+    status = "🔴 Bu içerik manipülatif başlık göstergeleri içerebilir.";
+    color = "#a32121";
+    details.push("Başlıkta dikkat çekici / sansasyonel ifadeler tespit edildi.");
+}
+else {
+    status = "🟡 Kaynak bilinmiyor. Dikkatli olunması önerilir.";
+    color = "#9c7c1f";
+    details.push("Kaynak bilinen güvenilir listede yer almıyor.");
+}
 
-  let message = "";
+/* Genel analiz */
+details.push("Haber farklı kaynaklardan doğrulanmalıdır.");
+details.push("Teyit platformları kontrol edilmelidir.");
 
-  if (score >= 70) {
-    message = "🟢 Yüksek Güvenilirlik";
-  } else if (score >= 40) {
-    message = "🟡 Şüpheli İçerik";
-  } else {
-    message = "🔴 Düşük Güvenilirlik";
-  }
+/* Sonucu Yazdır */
+resultBox.style.background = color;
+resultBox.style.padding = "20px";
+resultBox.style.borderRadius = "12px";
+resultBox.style.marginTop = "20px";
 
-  document.getElementById("result").innerHTML =
-    "<div class='score'>" + score + "/100</div>" +
-    "<div>" + message + "</div>" +
-    "<p style='font-size:14px;opacity:0.7;'>Bu sonuç algoritmik değerlendirmeye dayanmaktadır. Kesin doğruluk garantisi vermez.</p>";
+let detailList = "<ul>";
+details.forEach(item => {
+    detailList += "<li>" + item + "</li>";
+});
+detailList += "</ul>";
+
+resultBox.innerHTML = "<h3>" + status + "</h3>" + detailList + `
+<hr>
+<b>Doğrulama Önerileri:</b><br>
+• teyit.org<br>
+• dogrulukpayi.com<br>
+• factcheck.org<br><br>
+<i>Medya okuryazarlığı ipucu: Bir habere inanmadan önce en az iki bağımsız kaynaktan kontrol edin.</i>
+`;
 }
 </script>
+
 
 </body>
 </html>
