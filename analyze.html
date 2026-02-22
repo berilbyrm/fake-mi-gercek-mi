@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Haber Analizi</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
+  text-align: center;
+  padding: 40px;
+}
+
+input {
+  width: 60%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  padding: 12px 20px;
+  margin-top: 15px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #00b894;
+  color: white;
+}
+
+.result {
+  margin-top: 30px;
+  font-size: 20px;
+}
+
+.score {
+  font-size: 40px;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📰 Haber Güven Analizi</h1>
+
+<input type="text" id="newsUrl" placeholder="Haber linkini buraya yapıştır">
+<br>
+<button onclick="analyzeNews()">Analiz Et</button>
+
+<div class="result" id="result"></div>
+
+<script>
+function analyzeNews() {
+
+  let url = document.getElementById("newsUrl").value;
+  let score = 50;
+
+  let guvenilir = ["bbc.com","aa.com.tr","dw.com","trthaber.com"];
+  let supheli = ["haber365","sondakikahaberlerim","xblog","bilinmeyensite"];
+
+  for (let site of guvenilir) {
+    if (url.includes(site)) {
+      score += 40;
+    }
+  }
+
+  for (let site of supheli) {
+    if (url.includes(site)) {
+      score -= 40;
+    }
+  }
+
+  if (url.length > 100) {
+    score -= 10;
+  }
+
+  if (score > 100) score = 100;
+  if (score < 0) score = 0;
+
+  let message = "";
+
+  if (score >= 70) {
+    message = "🟢 Yüksek Güvenilirlik";
+  } else if (score >= 40) {
+    message = "🟡 Şüpheli İçerik";
+  } else {
+    message = "🔴 Düşük Güvenilirlik";
+  }
+
+  document.getElementById("result").innerHTML =
+    "<div class='score'>" + score + "/100</div>" +
+    "<div>" + message + "</div>" +
+    "<p style='font-size:14px;opacity:0.7;'>Bu sonuç algoritmik değerlendirmeye dayanmaktadır. Kesin doğruluk garantisi vermez.</p>";
+}
+</script>
+
+</body>
+</html>
