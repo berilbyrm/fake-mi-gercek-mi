@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fake mi Gerçek mi?</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -10,7 +11,7 @@
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background: #f5f7fa;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
     color: #1e293b;
 }
 
@@ -20,16 +21,17 @@ header {
     padding: 20px 40px;
     font-size: 22px;
     font-weight: 600;
+    letter-spacing: 1px;
 }
 
 .hero {
     text-align: center;
-    padding: 80px 20px 40px;
+    padding: 70px 20px 30px;
 }
 
 .hero h1 {
-    font-size: 42px;
-    margin-bottom: 15px;
+    font-size: 40px;
+    margin-bottom: 10px;
 }
 
 .hero p {
@@ -39,26 +41,26 @@ header {
 
 .analyzer-box {
     background: white;
-    max-width: 700px;
+    max-width: 750px;
     margin: 40px auto;
     padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
     text-align: center;
 }
 
 input {
-    width: 70%;
+    width: 65%;
     padding: 14px;
     font-size: 16px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #cbd5e1;
 }
 
 button {
     padding: 14px 22px;
     font-size: 16px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
     background: #0f172a;
     color: white;
@@ -71,26 +73,35 @@ button:hover {
     background: #1e293b;
 }
 
-#result {
+.result-card {
     margin-top: 25px;
-    font-size: 16px;
-    font-weight: 500;
+    padding: 20px;
+    border-radius: 12px;
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
 }
 
 .info-section {
-    background: #e2e8f0;
-    padding: 60px 20px;
+    background: white;
+    margin: 60px auto;
+    padding: 50px 20px;
     text-align: center;
 }
 
-.info-section h2 {
-    margin-bottom: 20px;
+.info-section ul {
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: auto;
 }
 
-.info-section p {
-    max-width: 700px;
-    margin: auto;
-    color: #334155;
+.info-section li {
+    padding: 8px 0;
 }
 
 footer {
@@ -99,6 +110,17 @@ footer {
     text-align: center;
     padding: 25px;
     font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    input {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    button {
+        width: 100%;
+        margin-left: 0;
+    }
 }
 </style>
 </head>
@@ -111,21 +133,23 @@ Fake mi Gerçek mi?
 
 <section class="hero">
     <h1>Haber Güvenilirlik Analizi</h1>
-    <p>Bir haber linki girin ve kaynağın güvenilirliğini değerlendirin.</p>
+    <p>Bağlantıyı girin, kaynağın güvenilirliğini değerlendirelim.</p>
 </section>
 
 <div class="analyzer-box">
     <input type="text" id="newsInput" placeholder="https://...">
     <button onclick="analyzeNews()">Analiz Et</button>
-    <div id="result"></div>
+    <div id="resultCard" class="result-card"></div>
 </div>
 
 <section class="info-section">
-    <h2>Nasıl Çalışır?</h2>
-    <p>
-    Sistem; alan adı uzantısı, bilinen haber kuruluşları ve temel güvenilirlik kriterlerine göre değerlendirme yapar.
-    Bu analiz bilgilendirme amaçlıdır ve kullanıcıyı bilinçlendirmeyi hedefler.
-    </p>
+    <h2>Güvenilirlik Kriterleri</h2>
+    <ul>
+        <li>✔ Alan adı uzantısı (.gov, .edu)</li>
+        <li>✔ Bilinen haber kuruluşu olup olmaması</li>
+        <li>✔ Şüpheli alan adı uzantıları</li>
+        <li>✔ Kaynak doğrulanabilirliği</li>
+    </ul>
 </section>
 
 <footer>
@@ -135,49 +159,54 @@ Fake mi Gerçek mi?
 <script>
 function analyzeNews() {
     var input = document.getElementById("newsInput").value.trim();
-    var result = document.getElementById("result");
+    var resultCard = document.getElementById("resultCard");
 
     if (input === "") {
-        result.innerHTML = "Lütfen bir haber linki giriniz.";
-        result.style.color = "red";
+        alert("Lütfen bir haber linki giriniz.");
         return;
     }
 
-    try {
-        var url = new URL(input);
-        var domain = url.hostname;
+    resultCard.style.display = "block";
+    resultCard.style.background = "#e2e8f0";
+    resultCard.innerHTML = "Analiz ediliyor...";
 
-        let message = "";
-        let color = "";
+    setTimeout(function() {
+        try {
+            var url = new URL(input);
+            var domain = url.hostname;
 
-        if (domain.includes("gov")) {
-            message = "Bu site resmi devlet uzantısı (.gov). Genellikle güvenilir kabul edilir.";
-            color = "green";
-        }
-        else if (domain.includes("edu")) {
-            message = "Bu site eğitim kurumu uzantısı (.edu). Akademik içerik barındırabilir.";
-            color = "green";
-        }
-        else if (domain.includes("bbc") || domain.includes("trthaber") || domain.includes("ntv") || domain.includes("aa.com")) {
-            message = "Bu kaynak bilinen bir haber kuruluşuna ait görünüyor.";
-            color = "green";
-        }
-        else if (domain.endsWith(".xyz") || domain.endsWith(".click") || domain.endsWith(".buzz")) {
-            message = "Alan adı uzantısı düşük güvenilirlik grubunda olabilir. Dikkatli olun.";
-            color = "orange";
-        }
-        else {
-            message = "Kaynağın güvenilirliği net değil. Yazar ve referansları kontrol edin.";
-            color = "orange";
-        }
+            let message = "";
+            let bgColor = "";
 
-        result.innerHTML = "<strong>Kaynak:</strong> " + domain + "<br><br>" + message;
-        result.style.color = color;
+            if (domain.includes("gov")) {
+                message = "Resmi devlet uzantısı (.gov). Genellikle güvenilir kabul edilir.";
+                bgColor = "#dcfce7";
+            }
+            else if (domain.includes("edu")) {
+                message = "Eğitim kurumu uzantısı (.edu). Akademik içerik olabilir.";
+                bgColor = "#dcfce7";
+            }
+            else if (domain.includes("bbc") || domain.includes("trthaber") || domain.includes("ntv") || domain.includes("aa.com")) {
+                message = "Bilinen haber kuruluşu. Editöryal süzgeçten geçmiş olabilir.";
+                bgColor = "#dcfce7";
+            }
+            else if (domain.endsWith(".xyz") || domain.endsWith(".click") || domain.endsWith(".buzz")) {
+                message = "Şüpheli alan adı uzantısı. Dikkatli olunmalıdır.";
+                bgColor = "#fef3c7";
+            }
+            else {
+                message = "Güvenilirliği net değil. Kaynağı ve referansları kontrol edin.";
+                bgColor = "#fef3c7";
+            }
 
-    } catch (error) {
-        result.innerHTML = "Geçerli bir URL giriniz (https:// ile başlamalı).";
-        result.style.color = "red";
-    }
+            resultCard.style.background = bgColor;
+            resultCard.innerHTML = "<strong>Kaynak:</strong> " + domain + "<br><br>" + message;
+
+        } catch (error) {
+            resultCard.style.background = "#fee2e2";
+            resultCard.innerHTML = "Geçerli bir URL giriniz (https:// ile başlamalı).";
+        }
+    }, 800);
 }
 </script>
 
